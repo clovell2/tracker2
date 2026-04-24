@@ -1,0 +1,9 @@
+[submodule "external/dump1090"]
+	path = external/dump1090
+	url = git@github.com:clovell2/dump1090.git
+[submodule "external/eigen"]
+	path = external/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "external/spdlog"]
+	path = external/spdlog
+	url = git@github.com:gabime/spdlog.git
