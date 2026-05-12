@@ -32,6 +32,7 @@ int main(){
         // time update
         //tracker.time_update();
         
+        // Wait until the next time step
     }
     spdlog::info("Stopping Tracker.");
     return 0;

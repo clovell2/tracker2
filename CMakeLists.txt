@@ -4,30 +4,40 @@ project(Tracker VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(CTest)
+
+set(spdlog_DIR "./external/spdlog/install/lib/cmake/spdlog")
+find_package(spdlog REQUIRED)
+
 set(SRC
-    src/main.cpp
     src/tracker.cpp
     src/track_filter.cpp
     src/adsb_interface.cpp
     )
 
-set(spdlog_DIR "./external/spdlog/install/lib/cmake/spdlog")
-find_package(spdlog REQUIRED)
+add_library("lib_${PROJECT_NAME}" SHARED ${SRC})
 
-add_executable(${PROJECT_NAME} ${SRC})
+add_executable(${PROJECT_NAME} 
+                src/main.cpp)
 
-target_include_directories(${PROJECT_NAME} PRIVATE 
+target_include_directories("lib_${PROJECT_NAME}" PUBLIC 
     ./include
     ./external/eigen
     ./external/spdlog/include
     )
 
-set(BUILD_TESTING OFF)
-# this is a hacky way of disabling testing. Since Catch2 is a submodule I need to manually disable building the executable
-if(BUILD_TESTING==ON)
-    find_package(Catch2 REQUIRED)
-    file(GLOB_RECURSE TEST_FILES 
-        ./test/test_*.cpp)
-    add_executable(Tests ${TEST_FILES})
-    target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+            "lib_${PROJECT_NAME}")
+
+if(BUILD_TESTING)
+find_package(Catch2 REQUIRED)
+
+set(TEST_FILES 
+        ./test/test_motion_model.cpp)
+
+add_executable(Tests ${TEST_FILES})
+
+target_link_libraries(Tests PRIVATE 
+            Catch2::Catch2WithMain
+            "lib_${PROJECT_NAME}")
 endif()
