@@ -11,6 +11,7 @@ Currently, the external library dependencies are submoduled in the [external](/e
  - dump1090 - for RTL-SDR hardware connection
  - Eigen - for internal tracker math and estimation
  - spdlog - for logging 
+ - Catch2 - for unit test framework
  - nolohmann/Json - for output file construction
 
 ### WSL installs
@@ -41,6 +42,12 @@ in linux terminal verify that the usb device is reachable
 cmake -S ./external/spdlog -B ./external/spdlog/build
 cmake --build ./external/spdlog/build
 cmake --install ./external/spdlog/build --prefix ./external/spdlog/install
+```
+
+```
+# Catch2 Build and Install
+cmake -B ./external/Catch2/build -S ./external/Catch2/ -DBUILD_TESTING=OFF
+sudo cmake --build ./external/Catch2/build/ --target install
 ```
 
  ### Build the Tracker

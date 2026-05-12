@@ -9,25 +9,30 @@ int main(){
     // Create interrupt handler
     std::signal(SIGINT, handle_sigint);
 
+    //Create ADSB hardware interface
+    ADSBInterface adsb; 
+
     // Initialize hardware
     spdlog::info("Hardware Started.");
+    adsb.init_interface();
 
     // Initialize tracker
     spdlog::info("Tracker Started.");
 
-    Eigen::Matrix2d m;
+    while(is_running){
+        // poll the hardware buffer for new ADS-B messages
+        adsb.write_buffer();
 
-    m << 1, 2,
-         3, 4;
+        // measurement update
+        //tracker.measurement_update(adsb_to_measurement(adsb.read_buffer()));
 
-    std::cout << m << std::endl;
-    
-    //while(is_running){
-    //      poll the hardware buffer for new ADS-B messages
-    //      measurement update
-    //      prune tracks
-    //      time update
-    //}
+        // prune tracks
+        //tracker.prune_tracks();
+
+        // time update
+        //tracker.time_update();
+        
+    }
     spdlog::info("Stopping Tracker.");
     return 0;
 }
