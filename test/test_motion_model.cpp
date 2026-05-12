@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include "track_filter.hpp"
+#include <iostream>
 // The purpose of the motion model is to provide a representation of a vehicles
 // dynamics in space over time. That this is implemented correctly can be verified by:
 // 1. checking that the states of the model can be updated in time, and they maintain kinematic consistency
@@ -47,10 +48,10 @@ TEST_CASE( "Motion Model Uncertainty Update", "[motion_model]" ) {
     MotionModel test_model = MotionModel(0.01, Px, Py, Pz);
     test_model.covariance_update();
     output = test_model.P();
-    //Let's see if the covariance determinants have increased
-    CHECK(output.block<2,2>(0,0).determinant() >= Px.determinant());
-    CHECK(output.block<2,2>(2,2).determinant() >= Py.determinant());
-    CHECK(output.block<2,2>(4,4).determinant() >= Pz.determinant());
+    //Let's see if the covariance terms have increased
+    CHECK((output.block<2,2>(0,0).array() >= Px.array()).all());
+    CHECK((output.block<2,2>(2,2).array() >= Py.array()).all());
+    CHECK((output.block<2,2>(4,4).array() >= Pz.array()).all());
 }
 
 TEST_CASE( "Motion Model New Measurement", "[motion_model]" ) {
@@ -74,8 +75,9 @@ TEST_CASE( "Motion Model New Measurement", "[motion_model]" ) {
     CHECK(output1[3]>=initial_state[3]);
     CHECK(output1[4]>=initial_state[4]);
     CHECK(output1[5]>=initial_state[5]);
-    //Let's see if the covariance determinants have decreased
-    CHECK(output2.block<2,2>(0,0).determinant() <= Px.determinant());
-    CHECK(output2.block<2,2>(2,2).determinant() <= Py.determinant());
-    CHECK(output2.block<2,2>(4,4).determinant() <= Pz.determinant());
+
+    //Let's see if the covariance terms have decreased
+    CHECK((output2.block<2,2>(0,0).array() <= Px.array()).all());
+    CHECK((output2.block<2,2>(2,2).array() <= Py.array()).all());
+    CHECK((output2.block<2,2>(4,4).array() <= Pz.array()).all());
 }

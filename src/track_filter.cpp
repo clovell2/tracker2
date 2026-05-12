@@ -20,7 +20,9 @@ MotionModel::MotionModel(float dt=0.0, Eigen::Matrix2f Px0 = Eigen::Matrix2f::Id
     //This R value is a guess... and probably wrong. need to tune it.
     R << 1.0, 0.0,
          0.0, 1.0;
-
+    Px = Px0;
+    Py = Py0;
+    Pz = Pz0;
     Kx = compute_kalman_gain(Px);
     Ky = compute_kalman_gain(Py);
     Kz = compute_kalman_gain(Pz);
@@ -59,7 +61,7 @@ void MotionModel::covariance_update() {
 };
 
 Eigen::Matrix<float,6,6> MotionModel::P() {
-    Eigen::Matrix<float,6,6> output;
+    Eigen::Matrix<float,6,6> output = Eigen::MatrixXf::Zero(6,6);
     output.block<2,2>(0,0) = Px;
     output.block<2,2>(2,2) = Py;
     output.block<2,2>(4,4) = Pz;
