@@ -1,9 +1,6 @@
  #include "motion_model.hpp"
 
-// Next Steps:
-// 1. Initialize Track filter. 
-
-//One of the things I'm concerned about in the motion model is the value of T in the A matrix from 3.27 in Blackman, which seems to assume a fixed time update rate.
+// One of the things I'm concerned about in the motion model is the value of T in the A matrix from 3.27 in Blackman, which seems to assume a fixed time update rate.
 // May be fine for now, but it means I'll have to force it to poll at that sample rate... maybe??
 
 AlphaBetaFilter::AlphaBetaFilter(float dt=0.0, Eigen::Matrix2f Px0 = Eigen::Matrix2f::Identity(), 

@@ -16,19 +16,19 @@ set(SRC
     src/adsb_interface.cpp
     )
 
-add_library("lib_${PROJECT_NAME}" SHARED ${SRC})
+add_library(${PROJECT_NAME} SHARED ${SRC})
 
-add_executable(${PROJECT_NAME} 
+add_executable("${PROJECT_NAME}_main" 
                 src/main.cpp)
 
-target_include_directories("lib_${PROJECT_NAME}" PUBLIC 
+target_include_directories(${PROJECT_NAME} PUBLIC 
     ./include
     ./external/eigen
     ./external/spdlog/include
     )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE 
-            "lib_${PROJECT_NAME}")
+target_link_libraries("${PROJECT_NAME}_main" PRIVATE 
+            ${PROJECT_NAME})
 
 if(BUILD_TESTING)
 find_package(Catch2 REQUIRED)
@@ -41,5 +41,5 @@ add_executable(Tests ${TEST_FILES})
 
 target_link_libraries(Tests PRIVATE 
             Catch2::Catch2WithMain
-            "lib_${PROJECT_NAME}")
+            ${PROJECT_NAME})
 endif()

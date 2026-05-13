@@ -59,7 +59,7 @@ cmake --build ./build
 
  ### Running Tracker
  ```
- ./build/Tracker
+ ./build/Tracker_main
  ```
  ### Running Tracker Tests
  ```

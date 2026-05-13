@@ -6,7 +6,7 @@ Tracker::Tracker() {
 
 void Tracker::measurement_update(std::vector<Measurement> msgs) {
     //Data Association
-    //Apply meaurement to a track 
+    //Apply meaurement to a track
 }
 
 void Tracker::step() {
