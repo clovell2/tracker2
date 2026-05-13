@@ -53,7 +53,7 @@ sudo cmake --build ./external/Catch2/build/ --target install
  ### Build the Tracker
 
  ```
-cmake -S . -B ./build
+cmake -S . -B ./build -DBUILD_TESTING=ON
 cmake --build ./build
  ```
 
@@ -61,5 +61,7 @@ cmake --build ./build
  ```
  ./build/Tracker
  ```
- 
-
+ ### Running Tracker Tests
+ ```
+ ./build/Tests
+```

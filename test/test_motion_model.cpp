@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include "track_filter.hpp"
+#include "motion_model.hpp"
 #include <iostream>
 // The purpose of the motion model is to provide a representation of a vehicles
 // dynamics in space over time. That this is implemented correctly can be verified by:
@@ -8,7 +8,7 @@
 // 3. checking that the addition of new measurements does not violate kinematic consistency and
 // 4. checking that the addition of new measurements decreases the uncertainty of state values
 
-TEST_CASE( "Motion Model State Update", "[motion_model]" ) {
+TEST_CASE( "Motion Model State Update", "[motion_model][alpha_beta_filter]" ) {
     Eigen::Matrix<float,6,1> output1, output2;
     // x=0, u=1, y=0, v=-1, z=0, w=0.5
     Eigen::Matrix<float,6,1> state = {0.0,1.0,0.0,-1.0,0.0,0.5};
@@ -16,7 +16,7 @@ TEST_CASE( "Motion Model State Update", "[motion_model]" ) {
     Px << 1.0, 0.0, 0.0, 1.0;
     Py << 1.0, 0.0, 0.0, 1.0;
     Pz << 1.0, 0.0, 0.0, 1.0;
-    MotionModel test_model = MotionModel(0.01, Px, Py, Pz);
+    AlphaBetaFilter test_model = AlphaBetaFilter(0.01, Px, Py, Pz);
     output1 = test_model.state_update(state);
     output2 = test_model.state_update(output1);
 
@@ -39,13 +39,13 @@ TEST_CASE( "Motion Model State Update", "[motion_model]" ) {
     CHECK(output2[5]==output1[5]);
 }
 
-TEST_CASE( "Motion Model Uncertainty Update", "[motion_model]" ) {
+TEST_CASE( "Motion Model Uncertainty Update", "[motion_model][alpha_beta_filter]" ) {
     Eigen::Matrix<float,6,6> output;
     Eigen::Matrix<float,2,2> Px, Py, Pz; 
     Px << 1.0, 0.0, 0.0, 1.0;
     Py << 1.0, 0.0, 0.0, 1.0;
     Pz << 1.0, 0.0, 0.0, 1.0;
-    MotionModel test_model = MotionModel(0.01, Px, Py, Pz);
+    AlphaBetaFilter test_model = AlphaBetaFilter(0.01, Px, Py, Pz);
     test_model.covariance_update();
     output = test_model.P();
     //Let's see if the covariance terms have increased
@@ -54,7 +54,7 @@ TEST_CASE( "Motion Model Uncertainty Update", "[motion_model]" ) {
     CHECK((output.block<2,2>(4,4).array() >= Pz.array()).all());
 }
 
-TEST_CASE( "Motion Model New Measurement", "[motion_model]" ) {
+TEST_CASE( "Motion Model New Measurement", "[motion_model][alpha_beta_filter]" ) {
     Eigen::Matrix<float,6,1> output1;
     Eigen::Matrix<float,6,6> output2;
     Eigen::Matrix<float,6,1> initial_state = {0.0,1.0,0.0,-1.0,0.0,0.5};
@@ -63,7 +63,7 @@ TEST_CASE( "Motion Model New Measurement", "[motion_model]" ) {
     Px << 1.0, 0.0, 0.0, 1.0;
     Py << 1.0, 0.0, 0.0, 1.0;
     Pz << 1.0, 0.0, 0.0, 1.0;
-    MotionModel test_model = MotionModel(0.01, Px, Py, Pz);
+    AlphaBetaFilter test_model = AlphaBetaFilter(0.01, Px, Py, Pz);
     output1 = test_model.state_correction(measurement, initial_state);
     output2 = test_model.P();
     // Check we're not adding/removing states
