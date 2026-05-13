@@ -1,5 +1,5 @@
  #include "motion_model.hpp"
- 
+
 // Next Steps:
 // 1. Initialize Track filter. 
 
@@ -51,7 +51,7 @@ Eigen::Matrix<float,6,1> AlphaBetaFilter::state_correction(Eigen::Matrix<float,6
     return states;
 };
 
-Eigen::Matrix<float,6,1>  AlphaBetaFilter::state_update(Eigen::Matrix<float,6,1>& state) {
+Eigen::Matrix<float,6,1> AlphaBetaFilter::state_update(Eigen::Matrix<float,6,1>& state) {
     Eigen::Matrix<float,6,1> states;
     states << A*state.segment<2>(0),
               A*state.segment<2>(2),
@@ -59,10 +59,11 @@ Eigen::Matrix<float,6,1>  AlphaBetaFilter::state_update(Eigen::Matrix<float,6,1>
     return states;
 };
 
-void AlphaBetaFilter::covariance_update() {
+Eigen::Matrix<float,6,6> AlphaBetaFilter::covariance_update() {
     Px = A*Px*A.transpose() + Q;
     Py = A*Py*A.transpose() + Q;
     Pz = A*Pz*A.transpose() + Q;
+    return P();
 };
 
 Eigen::Matrix<float,6,6> AlphaBetaFilter::P() {

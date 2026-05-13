@@ -13,17 +13,20 @@ struct Track {
         time_t last_update_time;
         // State Data of Track
         Eigen::Matrix<float,6,1> state;
+        // Covariance Data of Track
+        Eigen::Matrix<float,6,6> covar;
 };
 
 class TrackFilter {
-    TrackFilter(std::string id, std::unique_ptr<MotionModel> motion_model);
-    void measurement_update(Eigen::Matrix<float,6,1>& measurement);
-    void time_update();
-    void switch_motion_model(std::unique_ptr<MotionModel> new_model);
-    // Return track information
-    Track get();
-    // Return track id.
-    std::string id();
+    public:
+        TrackFilter(std::string id, std::unique_ptr<MotionModel> track_motion_model, Eigen::Matrix<float,6,1> initial_states);
+        void measurement_update(Eigen::Matrix<float,6,1>& measurement);
+        void time_update();
+        void switch_motion_model(std::unique_ptr<MotionModel> new_model);
+        // Return track information
+        Track get();
+        // Return track id.
+        std::string id();
     private:
         // Structure containing track information
         Track track;

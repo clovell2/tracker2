@@ -1,8 +1,6 @@
 #pragma once
 #include <Eigen/Dense>
-/*
-* The base class for track motion models.
-*/
+// The base class for track motion models.
 class MotionModel {
     public:
         /*
@@ -15,12 +13,21 @@ class MotionModel {
         * 
         */
         virtual Eigen::Matrix<float,6,1> state_correction(Eigen::Matrix<float,6,1>& measurement, Eigen::Matrix<float,6,1>& prev_state) = 0;
-        virtual Eigen::Matrix<float,6,1>  state_update(Eigen::Matrix<float,6,1>& state) = 0;
-        virtual void covariance_update() = 0;
+        virtual Eigen::Matrix<float,6,1> state_update(Eigen::Matrix<float,6,1>& state) = 0;
+        virtual Eigen::Matrix<float,6,6> covariance_update() = 0;
 };
 
+// Alpha-Beta filter. Derived from the MotionModel base class
 class AlphaBetaFilter: public MotionModel {
     public:
+        /*
+        * Constructor for a basic Alpha-Beta motion model
+        * 
+        * @param dt timestep of the motion model.
+        * @param Px0 initial X coordinate covariance matrix for position and velocity
+        * @param Py0 initial y coordinate covariance matrix for position and velocity
+        * @param Pz0 initial z coordinate covariance matrix for position and velocity
+        */
         AlphaBetaFilter(float dt, Eigen::Matrix2f Px0, Eigen::Matrix2f Py0, Eigen::Matrix2f Pz0);
         /*
         * Computes the state correction portion of a Kalman filter.
@@ -45,8 +52,10 @@ class AlphaBetaFilter: public MotionModel {
         Eigen::Matrix<float,6,1> state_update(Eigen::Matrix<float,6,1>& state) override;
         /*
         * Propogates the covariance of a Kalman filter.
+        * 
+        * @return The new covariance matrix
         */
-        void covariance_update() override;
+        Eigen::Matrix<float,6,6> covariance_update() override;
         /*
         * Returns the Covariance Matrix of the system
         *

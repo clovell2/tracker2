@@ -12,6 +12,7 @@ find_package(spdlog REQUIRED)
 set(SRC
     src/tracker.cpp
     src/track_filter.cpp
+    src/alpha_beta_filter.cpp
     src/adsb_interface.cpp
     )
 
@@ -33,7 +34,8 @@ if(BUILD_TESTING)
 find_package(Catch2 REQUIRED)
 
 set(TEST_FILES 
-        ./test/test_motion_model.cpp)
+        ./test/test_motion_model.cpp
+        ./test/test_track_filter.cpp)
 
 add_executable(Tests ${TEST_FILES})
 
