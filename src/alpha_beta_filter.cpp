@@ -17,7 +17,7 @@ AlphaBetaFilter::AlphaBetaFilter(float dt=0.0, Eigen::Matrix2f Px0 = Eigen::Matr
     Q << sigma_m2*(0.3333)*dt*dt*dt, sigma_m2*(0.5)*dt*dt,
          sigma_m2*(0.5)*dt*dt, sigma_m2*dt;
 
-    //This R value is a guess... and probably wrong. need to tune it.
+    //TODO: This R value is a guess... and probably wrong. need to tune it.
     R << 1.0, 0.0,
          0.0, 1.0;
 

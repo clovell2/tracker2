@@ -26,11 +26,8 @@ int main(){
         // measurement update
         //tracker.measurement_update(adsb_to_measurement(adsb.read_buffer()));
 
-        // prune tracks
-        //tracker.prune_tracks();
-
-        // time update
-        //tracker.time_update();
+        // update tracks
+        //tracker.step();
         
         // Wait until the next time step
     }

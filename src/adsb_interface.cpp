@@ -1,27 +1,28 @@
 #include "adsb_interface.hpp"
 
 ADSBInterface::ADSBInterface(){
-// Do stuff here
+// TODO
 
 };
 
 void ADSBInterface::init_interface(){
+// TODO
 
 };
 
 void ADSBInterface::write_buffer(){
-// Do stuff here
+// TODO
 
 };
 
 ADSB ADSBInterface::read_buffer(){
 ADSB output;
-// Do stuff here
+// TODO
 
 return output;
 };
 
 void ADSBInterface::clear_buffer(){
-// Do stuff here
+// TODO
 
 };
