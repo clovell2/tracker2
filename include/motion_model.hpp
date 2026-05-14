@@ -1,6 +1,8 @@
 #pragma once
 #include <Eigen/Dense>
+
 // The base class for track motion models.
+// IDEA: Could I make this a template so I could pass in the datatypes or sizes of the matrices being passed in and out?
 class MotionModel {
     public:
         /*
