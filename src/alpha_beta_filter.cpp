@@ -64,7 +64,7 @@ Eigen::Matrix<float,6,6> AlphaBetaFilter::covariance_update() {
 };
 
 Eigen::Matrix<float,6,6> AlphaBetaFilter::P() {
-    Eigen::Matrix<float,6,6> output = Eigen::MatrixXf::Zero(6,6);
+    Eigen::Matrix<float,6,6> output = Eigen::MatrixXf::Zero();
     output.block<2,2>(0,0) = Px;
     output.block<2,2>(2,2) = Py;
     output.block<2,2>(4,4) = Pz;

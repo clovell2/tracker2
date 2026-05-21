@@ -1,5 +1,7 @@
 #include "tracker.hpp"
 
+//TRY: Could I make a map of motion models as an optional argument into the tracker, but require a default motion model? 
+//     Then if the keyword is not found, I can fallback to using the default motion model
 Tracker::Tracker() {
     dt = 0.01;
 }
@@ -8,9 +10,11 @@ void Tracker::measurement_update(std::vector<Measurement> msgs) {
     // Perform Data Association
 
     // if the measurement is associated with an active track, apply the measurement to that track
+    if (false) {
+
+    } else {
     // else store the measurement in a candidate measurement buffer, which needs to evaluate if there are inter measurement assoications
-    // if there are assoicated measurements, trigger generation of a new track filter.
-    create_new_track();
+    }    
 }
 
 void Tracker::create_new_track(){
@@ -21,12 +25,17 @@ void Tracker::create_new_track(){
 
 void Tracker::step() {
     prune_tracks();
+    if (true) {
+        // if there are assoicated measurements, trigger generation of a new track filter.
+        create_new_track();
+    }
     time_update();
 }
 
 void Tracker::time_update() {
     for(int idx0 = 0; idx0 < tracks.size(); idx0++){
         tracks[idx0].time_update();
+        // here is where I can switch the track motion model if the covariance is too large & growing
     }
 }
 
